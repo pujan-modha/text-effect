@@ -1,30 +1,43 @@
-window.onload = function() {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+/* -- Glow effect -- */
+window.onload = function(){
+    const blob = document.getElementById("blob");
 
-    let interval = null;
+window.onpointermove = event => {
+    const { clientX, clientY } = event;
 
-    document.querySelector("h1").onmouseover = event => {
-        let iteration = 0;
+    blob.animate({
+        left: `${clientX}px`,
+        top: `${clientY}px`
+    }, { duration: 3000, fill: "forwards" });
+}
 
-        clearInterval(interval);
+/* -- Text effect -- */
 
-        interval = setInterval(() => {
-            event.target.innerText = event.target.innerText
-                .split("")
-                .map((letter, index) => {
-                    if (index < iteration) {
-                        return event.target.dataset.value[index];
-                    }
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-                    return letters[Math.floor(Math.random() * 26)];
-                })
-                .join("");
+let interval = null;
 
-            if (iteration >= event.target.dataset.value.length) {
-                clearInterval(interval);
-            }
+document.querySelector("h1").onmouseover = event => {
+    let iteration = 0;
 
-            iteration += 1 / 3;
-        }, 30);
-    };
-};
+    clearInterval(interval);
+
+    interval = setInterval(() => {
+        event.target.innerText = event.target.innerText
+            .split("")
+            .map((letter, index) => {
+                if(index < iteration) {
+                    return event.target.dataset.value[index];
+                }
+
+                return letters[Math.floor(Math.random() * 26)]
+            })
+            .join("");
+
+        if(iteration >= event.target.dataset.value.length){
+            clearInterval(interval);
+        }
+
+        iteration += 1 / 3;
+    }, 30);
+}};
